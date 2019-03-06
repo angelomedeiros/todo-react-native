@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
 
+import Task from "../Components/Task";
+
 import moment from "moment";
 import "moment/locale/pt-br";
 
@@ -22,9 +24,20 @@ export default class Agenda extends Component {
           </View>
         </ImageBackground>
         <View style={styles.taskContainer}>
-          <Text>Task 1</Text>
-          <Text>Task 2</Text>
-          <Text>Task 3</Text>
+          <Task desc="Tarefa Pendente" estimateAt={new Date()} doneAt={null} />
+          <Task desc="Tarefa Concluída" estimateAt={new Date()} doneAt={new Date()} />
+          <Task desc="Tarefa Pendente" estimateAt={new Date()} doneAt={null} />
+          <Task desc="Tarefa Concluída" estimateAt={new Date()} doneAt={new Date()} />
+          <Task desc="Tarefa Pendente" estimateAt={new Date()} doneAt={null} />
+          <Task desc="Tarefa Concluída" estimateAt={new Date()} doneAt={new Date()} />
+          <Task desc="Tarefa Pendente" estimateAt={new Date()} doneAt={null} />
+          <Task desc="Tarefa Concluída" estimateAt={new Date()} doneAt={new Date()} />
+          <Task desc="Tarefa Pendente" estimateAt={new Date()} doneAt={null} />
+          <Task desc="Tarefa Concluída" estimateAt={new Date()} doneAt={new Date()} />
+          <Task desc="Tarefa Pendente" estimateAt={new Date()} doneAt={null} />
+          <Task desc="Tarefa Concluída" estimateAt={new Date()} doneAt={new Date()} />
+          <Task desc="Tarefa Pendente" estimateAt={new Date()} doneAt={null} />
+          <Task desc="Tarefa Concluída" estimateAt={new Date()} doneAt={new Date()} />
         </View>
       </View>
     );
