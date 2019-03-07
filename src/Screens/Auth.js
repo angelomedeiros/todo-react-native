@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Alert } from "react-native";
+import axios from "axios";
 
 import commonStyles from "../commonStyle";
-import backgroundImage from "../../assets/imgs/login.jpg";
 import AuthInput from "../Components/AuthInput";
+import { server, showError } from "../common";
+import backgroundImage from "../../assets/imgs/login.jpg";
 
 export default class Auth extends Component {
   state = {
@@ -14,17 +16,62 @@ export default class Auth extends Component {
     confirmPassword: ""
   };
 
+  signup = async () => {
+    const { name, email, password, confirmPassword } = this.state;
+    try {
+      await axios.post(`${server}/signup`, {
+        name,
+        email,
+        password,
+        confirmPassword
+      });
+
+      Alert.alert("Sucesso", "Usuário cadastrado");
+      this.setState({ stateNew: false });
+    } catch (err) {
+      showError(err);
+    }
+  };
+
+  signin = async () => {
+    const { email, password } = this.state;
+    try {
+      const res = await axios.post(`${server}/signin`, {
+        email,
+        password
+      });
+      axios.defaults.headers.common["Authorization"] = `bearer ${res.data.token}`;
+      this.props.navigation.navigate("Home");
+    } catch (err) {
+      showError(err);
+    }
+  };
+
   signinOrSignout = () => {
     if (this.state.stateNew) {
-      Alert("Sucesso", "Criar conta");
+      this.signup();
     } else {
-      Alert("Sucesso", "Logar");
+      this.signin();
     }
   };
 
   render() {
     const { stateNew, name, confirmPassword, password, email } = this.state;
     const { signinOrSignout } = this;
+
+    const validations = [];
+
+    validations.push(email && email.includes("@"));
+    validations.push(password && password.length >= 6);
+
+    if (stateNew) {
+      validations.push(name && name.trim());
+      validations.push(confirmPassword);
+      validations.push(confirmPassword === password);
+    }
+
+    const validForm = validations.reduce((acumulador, item) => acumulador && item);
+
     return (
       <ImageBackground source={backgroundImage} style={styles.background}>
         <Text style={styles.title}>Tasks</Text>
@@ -64,8 +111,8 @@ export default class Auth extends Component {
               onChangeText={confirmPassword => this.setState({ confirmPassword })}
             />
           )}
-          <TouchableOpacity onPress={signinOrSignout}>
-            <View style={styles.button}>
+          <TouchableOpacity onPress={signinOrSignout} disabled={!validForm}>
+            <View style={[styles.button, !validForm && { backgroundColor: "#aaa" }]}>
               <Text style={styles.buttonText}>{stateNew ? "Registrar" : "Entrar"}</Text>
             </View>
           </TouchableOpacity>
