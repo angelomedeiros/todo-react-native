@@ -6,17 +6,20 @@ import {
   ImageBackground,
   FlatList,
   TouchableOpacity,
-  Platform
+  Platform,
+  Alert
 } from "react-native";
 
-import Task from "../Components/Task";
-
+import ActionButton from "react-native-action-button";
+import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
+
 import "moment/locale/pt-br";
 
+import AddTask from "./AddTask";
+import Task from "../Components/Task";
 import todayImage from "../../assets/imgs/today.jpg";
 import commonStyle from "../commonStyle";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 export default class Agenda extends Component {
   state = {
@@ -37,12 +40,24 @@ export default class Agenda extends Component {
       { id: Math.random(), desc: "Comprar pão", estimateAt: new Date(), doneAt: null }
     ],
     visibleTasks: [],
-    showDoneTasks: true
+    showDoneTasks: true,
+    showAddTask: false
   };
 
   componentDidMount() {
     this.filterTasks();
   }
+
+  addTask = task => {
+    const tasks = [...this.state.tasks];
+    tasks.push({
+      id: Math.random(),
+      desc: task.desc,
+      estimateAt: task.date,
+      doneAt: null
+    });
+    this.setState({ tasks, showAddTask: false }, this.filterTasks);
+  };
 
   toggleTask = id => {
     const tasks = [...this.state.tasks];
@@ -73,6 +88,11 @@ export default class Agenda extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <AddTask
+          isVisible={this.state.showAddTask}
+          onSave={this.addTask}
+          onCancel={() => this.setState({ showAddTask: false })}
+        />
         <ImageBackground source={todayImage} style={styles.background}>
           <View style={styles.iconBar}>
             <TouchableOpacity onPress={this.toogleFilter}>
@@ -99,6 +119,12 @@ export default class Agenda extends Component {
             renderItem={({ item }) => <Task {...item} toggleTask={this.toggleTask} />}
           />
         </View>
+        <ActionButton
+          buttonColor={commonStyle.colors.today}
+          onPress={() => {
+            this.setState({ showAddTask: true });
+          }}
+        />
       </View>
     );
   }
