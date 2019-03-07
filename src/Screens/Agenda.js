@@ -7,7 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
-  Alert
+  AsyncStorage
 } from "react-native";
 
 import ActionButton from "react-native-action-button";
@@ -29,8 +29,10 @@ export default class Agenda extends Component {
     showAddTask: false
   };
 
-  componentDidMount() {
-    this.filterTasks();
+  async componentDidMount() {
+    const data = await AsyncStorage.getItem("tasks");
+    const tasks = JSON.parse(data) || [];
+    this.setState({ tasks }, this.filterTasks);
   }
 
   addTask = task => {
@@ -64,6 +66,7 @@ export default class Agenda extends Component {
       visibleTasks = this.state.tasks.filter(pendingTask);
     }
     this.setState({ visibleTasks });
+    AsyncStorage.setItem("tasks", JSON.stringify(this.state.tasks));
   };
 
   toogleFilter = () => {
