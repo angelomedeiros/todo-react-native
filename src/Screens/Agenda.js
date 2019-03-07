@@ -23,22 +23,7 @@ import commonStyle from "../commonStyle";
 
 export default class Agenda extends Component {
   state = {
-    tasks: [
-      { id: Math.random(), desc: "Lavar a louça", estimateAt: new Date(), doneAt: new Date() },
-      { id: Math.random(), desc: "Comprar pão", estimateAt: new Date(), doneAt: null },
-      { id: Math.random(), desc: "Lavar a louça", estimateAt: new Date(), doneAt: new Date() },
-      { id: Math.random(), desc: "Comprar pão", estimateAt: new Date(), doneAt: null },
-      { id: Math.random(), desc: "Lavar a louça", estimateAt: new Date(), doneAt: new Date() },
-      { id: Math.random(), desc: "Comprar pão", estimateAt: new Date(), doneAt: null },
-      { id: Math.random(), desc: "Lavar a louça", estimateAt: new Date(), doneAt: new Date() },
-      { id: Math.random(), desc: "Comprar pão", estimateAt: new Date(), doneAt: null },
-      { id: Math.random(), desc: "Lavar a louça", estimateAt: new Date(), doneAt: new Date() },
-      { id: Math.random(), desc: "Comprar pão", estimateAt: new Date(), doneAt: null },
-      { id: Math.random(), desc: "Lavar a louça", estimateAt: new Date(), doneAt: new Date() },
-      { id: Math.random(), desc: "Comprar pão", estimateAt: new Date(), doneAt: null },
-      { id: Math.random(), desc: "Lavar a louça", estimateAt: new Date(), doneAt: new Date() },
-      { id: Math.random(), desc: "Comprar pão", estimateAt: new Date(), doneAt: null }
-    ],
+    tasks: [],
     visibleTasks: [],
     showDoneTasks: true,
     showAddTask: false
@@ -85,6 +70,11 @@ export default class Agenda extends Component {
     this.setState({ showDoneTasks: !this.state.showDoneTasks }, this.filterTasks);
   };
 
+  deleteTask = id => {
+    const tasks = this.state.tasks.filter(task => task.id !== id);
+    this.setState({ tasks }, this.filterTasks);
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -116,7 +106,9 @@ export default class Agenda extends Component {
           <FlatList
             data={this.state.visibleTasks}
             keyExtractor={item => `${item.id}`}
-            renderItem={({ item }) => <Task {...item} toggleTask={this.toggleTask} />}
+            renderItem={({ item }) => (
+              <Task {...item} onDelete={this.deleteTask} onToggleTask={this.toggleTask} />
+            )}
           />
         </View>
         <ActionButton
