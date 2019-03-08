@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+  Alert,
+  AsyncStorage
+} from "react-native";
 import axios from "axios";
 
 import commonStyles from "../commonStyle";
@@ -41,7 +49,8 @@ export default class Auth extends Component {
         password
       });
       axios.defaults.headers.common["Authorization"] = `bearer ${res.data.token}`;
-      this.props.navigation.navigate("Home");
+      AsyncStorage.setItem("userData", JSON.stringify(res.data));
+      this.props.navigation.navigate("Home", res.data);
     } catch (err) {
       showError(err);
     }

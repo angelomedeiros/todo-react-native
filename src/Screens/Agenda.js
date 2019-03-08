@@ -101,10 +101,10 @@ export default class Agenda extends Component {
     const { daysAhead, title } = this.props;
 
     switch (daysAhead) {
-      case 0:
+      case 1:
         (styleColor = commonStyle.colors.today), (image = todayImage);
         break;
-      case 1:
+      case 2:
         (styleColor = commonStyle.colors.tomorrow), (image = tomorrowImage);
         break;
       case 7:

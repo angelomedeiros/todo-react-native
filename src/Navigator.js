@@ -3,18 +3,20 @@ import { createSwitchNavigator, createDrawerNavigator } from "react-navigation";
 import Agenda from "./Screens/Agenda";
 import Auth from "./Screens/Auth";
 import commonStyles from "./commonStyle";
+import Menu from "./Components/Menu";
+import AuthOrApp from "./Screens/AuthOrApp";
 
 const MenuRoutes = {
   Today: {
     name: "Today",
-    screen: props => <Agenda title="Hoje" daysAhead={0} {...props} />,
+    screen: props => <Agenda title="Hoje" daysAhead={1} {...props} />,
     navigationOptions: {
       title: "Hoje"
     }
   },
   Tomorrow: {
     name: "Tomorrow",
-    screen: props => <Agenda title="Amanhã" daysAhead={1} {...props} />,
+    screen: props => <Agenda title="Amanhã" daysAhead={2} {...props} />,
     navigationOptions: {
       title: "Amanhã"
     }
@@ -37,6 +39,7 @@ const MenuRoutes = {
 
 const MenuConfig = {
   initialRouteName: "Today",
+  contentComponent: Menu,
   contentOptions: {
     labelStyle: {
       fontFamily: commonStyles.fontFamily,
@@ -52,6 +55,10 @@ const MenuConfig = {
 const MenuNavigator = createDrawerNavigator(MenuRoutes, MenuConfig);
 
 const MainRoutes = {
+  Loading: {
+    name: "Loading",
+    screen: AuthOrApp
+  },
   Auth: {
     name: "Auth",
     screen: Auth
@@ -62,5 +69,5 @@ const MainRoutes = {
   }
 };
 
-const MainNavigator = createSwitchNavigator(MainRoutes, { initialRouteName: "Auth" });
+const MainNavigator = createSwitchNavigator(MainRoutes, { initialRouteName: "Loading" });
 export default MainNavigator;

@@ -83,22 +83,24 @@ export default class AddTasks extends Component {
         <TouchableWithoutFeedback onPress={onCancel}>
           <View style={styles.offset} />
         </TouchableWithoutFeedback>
-        <View style={styles.container}>
-          <Text style={styles.header}>Nova tarefa!</Text>
-          <TextInput
-            placeholder="Descrição..."
-            style={styles.input}
-            onChangeText={desc => this.setState({ desc })}
-            value={this.state.desc}
-          />
-          {datePicker}
-          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-            <TouchableOpacity onPress={onCancel}>
-              <Text style={styles.button}>Cancelar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.save}>
-              <Text style={styles.button}>Salvar</Text>
-            </TouchableOpacity>
+        <View style={styles.modal}>
+          <View style={styles.container}>
+            <Text style={styles.header}>Nova tarefa!</Text>
+            <TextInput
+              placeholder="Descrição..."
+              style={styles.input}
+              onChangeText={desc => this.setState({ desc })}
+              value={this.state.desc}
+            />
+            {datePicker}
+            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+              <TouchableOpacity onPress={onCancel}>
+                <Text style={styles.button}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.save}>
+                <Text style={styles.button}>Salvar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
         <TouchableWithoutFeedback onPress={onCancel}>
@@ -112,7 +114,8 @@ export default class AddTasks extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    width: "80%"
   },
   offset: {
     flex: 1,
@@ -148,5 +151,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
     textAlign: "center"
+  },
+  modal: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.7)"
   }
 });
